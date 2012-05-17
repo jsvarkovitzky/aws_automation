@@ -12,6 +12,8 @@ import os
 import time
 import keys
 import sys
+import user_info_file
+user = user_info_file.user_info()
 
 ################                                                                
 ## Status Bar ##                                                                
@@ -32,10 +34,11 @@ def status(n,N):
 
 conn = EC2Connection(keys.aws_key('access'),keys.aws_key('secret'))
 
+print "The pem key to be used is: %s" %user.pem_file
 #Start a new instance
 if 1:
     #Start a micro-instance
-    conn.run_instances('ami-9216b3fb',key_name='research',instance_type='m1.large',security_groups=['SSHHTTPAllowed'])
+    conn.run_instances('ami-9216b3fb',key_name=user.pem_file,instance_type='m1.large',security_groups=[user.security_group])
     #Brief pause to wait for instance to start up
     pause_time = 60
     print "Pausing for %s seconds to allow instance to turn on..."%pause_time
@@ -58,11 +61,12 @@ key_file = 'keys.py'
 driver_file = 'Driver_Test.csv'
 #Test by scp-ing a text file to aws
 print "Uploading files to instance..."
-exec('os.system("scp -i research.pem -o StrictHostKeyChecking=no %r ubuntu@%s:.")'%(key_file,dns))
-exec('os.system("scp -i research.pem -o StrictHostKeyChecking=no %r ubuntu@%s:.")'%(script,dns))
-exec('os.system("scp -i research.pem -o StrictHostKeyChecking=no %r ubuntu@%s:.")'%(driver_file,dns))
+
+os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(key_file) + ' ubuntu@' + repr(dns) + ':.')
+os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(script) + ' ubuntu@' + repr(dns) + ':.')
+os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(driver_file) + ' ubuntu@' + repr(dns) + ':.')
 
 print "Executing shell script remotely..."
-os.system("ssh -i research.pem ubuntu@%s 'bash %r' "%(dns,script))
+os.system('ssh -i ' + repr(user.pem_file) + '.pem ubuntu@' + repr(dns) + ' bash ' + repr(script))
 
 
