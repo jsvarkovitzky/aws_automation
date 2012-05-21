@@ -11,4 +11,4 @@ class user_info:
         #select the bucket from which to pull topo data
         self.topo_bucket = 'cc_topos'
         self.result_becket = 'cc_results'
-
+        self.product_bucket = 'cc_products'
