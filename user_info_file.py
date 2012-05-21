@@ -8,4 +8,7 @@ class user_info:
         self.pem_file = 'research'
         #put the name of the secruity group you want to use (must be already setup on AWS)
         self.security_group = 'sshHTTPallowed'
-        
+        #select the bucket from which to pull topo data
+        self.topo_bucket = 'cc_topos'
+        self.result_becket = 'cc_results'
+
