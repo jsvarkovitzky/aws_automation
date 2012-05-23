@@ -58,14 +58,14 @@ print(dns)
 
 script = 'automateTestCase.sh'
 key_file = 'keys.py'
-driver_file = 'Driver_Test.csv'
+driver_file = 'Driver.csv'
 #Test by scp-ing a text file to aws
 print "Uploading files to instance..."
 
 os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(key_file) + ' ubuntu@' + repr(dns) + ':.')
 os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(script) + ' ubuntu@' + repr(dns) + ':.')
 os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(driver_file) + ' ubuntu@' + repr(dns) + ':.')
-
+os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr('user_info_file.py') + ' ubuntu@' + repr(dns) + ':.')
 print "Executing shell script remotely..."
 os.system('ssh -i ' + repr(user.pem_file) + '.pem ubuntu@' + repr(dns) + ' bash ' + repr(script))
 
