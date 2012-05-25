@@ -20,8 +20,8 @@ python setenv.py
 source setenv.bash
 #Return to home dir
 cd /home/ubuntu
-git clone git://github.com/jsvarkovitzky/CC.git
 
+git clone git://github.com/jsvarkovitzky/CC.git
 cp ~/keys.py /home/ubuntu/CC/.
 #templatehomedir
 cd /home/ubuntu/CC
@@ -29,4 +29,6 @@ python get_topo_s3.py
 
 cd /home/ubuntu/CC/simulation
 
-nohup time make .plots &
+nohup time make .plots > nohup.out &
+echo "Returning to driver \n"
+exit
