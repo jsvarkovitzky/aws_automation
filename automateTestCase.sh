@@ -28,8 +28,11 @@ cp ~/keys.py /home/ubuntu/CC/.
 #templatehomedir
 cd /home/ubuntu/CC
 
-#python get_topo_s3.py
+python get_topo_s3.py 
 
 cd /home/ubuntu/CC/simulation
 
-nohup make .plots > nohup.out 2>&1 &
+nohup make .plots > nohup.out 2>&1 & #&& exit &
+#nohup make .plots > nohup.out && sudo halt &
+exit
+#sudo halt
