@@ -27,7 +27,7 @@ python get_topo_s3.py
 
 #Begin simulation
 cd /home/ubuntu/CC/simulation
-nohup make .plots > nohup.out 2>&1 & 
+nohup python runSimulation.py > nohup.out 2>&1 & 
 
 exit
 
