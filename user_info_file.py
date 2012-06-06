@@ -1,6 +1,6 @@
-#This class reads in user defined settings for AWS access
-#Jonathan Varkovitzky
-#May 17, 2012
+# This class reads in user defined settings for AWS access
+# Jonathan Varkovitzky
+# May 17, 2012
 
 class user_info:
     def __init__(self):
@@ -8,7 +8,9 @@ class user_info:
         self.pem_file = 'research'
         #put the name of the secruity group you want to use (must be already setup on AWS)
         self.security_group = 'sshHTTPallowed'
-        #select the bucket from which to pull topo data
+        #select the bucket from which to pull or upload data
         self.topo_bucket = 'cc_topos'
-        self.result_becket = 'cc_results'
+        self.output_bucket = 'cc_output'
         self.product_bucket = 'cc_products'
+        #Define which driver file to use for the simulation
+        self.driver_file = 'Driver_Test.csv'

@@ -4,7 +4,7 @@
 #Jonathan Varkovitzky
 #May 13, 2012
 
-#Initialize connection
+#Import nessisary libraries and files on the current aws machine in use
 from boto.ec2.connection import *
 from numpy import *
 from scipy.special import *
@@ -18,9 +18,9 @@ import csv
 #Makes user specific data callable in this script
 user = user_info_file.user_info()
 
-################                                                                
-## Status Bar ##                                                                
-################                                                                
+#########################                                                                
+## Function Status Bar ##                                                                
+#########################                                                       
 
 def status(n,N):
     n = float(n)
@@ -30,9 +30,9 @@ def status(n,N):
     sys.stdout.write("[==> ]%3d%%\r" %percent)
     sys.stdout.flush()
 
-####################
-## Start Instance ##
-####################
+#############################
+## Function Start Instance ##
+#############################
 
 def start_instance():
     print "The pem key to be used is: %s" %user.pem_file
@@ -60,16 +60,7 @@ def start_instance():
         
         local_file_names = [key_file,script,driver_file,user_info_file,topo_list,georegion_list,tidegauge_list,fixedgrid_list]
         ec2_file_names = [key_file,script,driver_file,user_info_file,topo_list,georegion_list,tidegauge_list,fixedgrid_list]
-        """
-        os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(key_file) + ' ubuntu@' + repr(dns) + ':.')
-        os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(script) + ' ubuntu@' + repr(dns) + ':.')
-        os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(driver_file) + ' ubuntu@' + repr(dns) + ':.')
-        os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(user_info_file) + ' ubuntu@' + repr(dns) + ':.')
-        os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(topo_list) + ' ubuntu@' + repr(dns) + ':topo_list.csv')
-        os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(georegion_list) + ' ubuntu@' + repr(dns) + ':georegion_list.csv')
-        os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(tidegauge_list) + ' ubuntu@' + repr(dns) + ':tidegauge_list.csv')
-        os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(fixedgrid_list) + ' ubuntu@' + repr(dns) + ':fixedgrid_list.csv')
-        """
+
         for i in range(0,len(local_file_names)):
             file_uploader(local_file_names[i],ec2_file_names[i],dns)
 
@@ -82,9 +73,9 @@ def start_instance():
         print "** You are now back on the driver instance **"
         print "*********************************************"
 
-###################
-## File Uploader ##
-###################
+############################
+## Function File Uploader ##
+############################
 
 def file_uploader(local_file_name,ec2_file_name,dns):
     os.system('scp -i ' + repr(user.pem_file) + '.pem -o StrictHostKeyChecking=no ' + repr(local_file_name) + 
@@ -94,14 +85,30 @@ def file_uploader(local_file_name,ec2_file_name,dns):
 ## Main Program ##
 ##################
 
-#Initialize connection with EC2 using personal keys
+#Initialize connection with EC2 using personal keys from keys.py
 conn = EC2Connection(keys.aws_key('access'),keys.aws_key('secret'))
 
 #Read the Driver file to be used
 driver_file = 'Driver.csv'
+#driver_block is an indexable array containing the contents of driver_file 
 driver_block = genfromtxt(driver_file, dtype=None, delimiter=',', skip_header=1)
 
-for row in driver_block:
+#Each row of driver_block represents a unique instance
+
+#First case is if driver_block has multiple rows
+try:
+    for row in driver_block:
+        script = 'automateTestCase.sh'
+        key_file = 'keys.py'
+        user_info_file = 'user_info_file.py'
+        topo_list = row[8]
+        georegion_list = row[9]
+        tidegauge_list = row[10]
+        fixedgrid_list = row[11]
+        start_instance()
+#Second case is if driver_block has a single row
+except:
+    row = driver_block[()]
     script = 'automateTestCase.sh'
     key_file = 'keys.py'
     user_info_file = 'user_info_file.py'
