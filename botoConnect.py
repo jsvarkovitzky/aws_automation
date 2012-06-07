@@ -98,7 +98,7 @@ driver_block = genfromtxt(driver_file, dtype=None, delimiter=',', skip_header=1)
 #First case is if driver_block has multiple rows
 try:
     for row in driver_block:
-        script = 'automateTestCase.sh'
+        script = 'automateSetup.sh'
         key_file = 'keys.py'
         user_info_file = 'user_info_file.py'
         topo_list = row[8]
