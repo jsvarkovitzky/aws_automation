@@ -1,4 +1,4 @@
-def lin_copy(driverMaster,driverSub,row):
+def make_driver(driverMaster,driverSub,row):
     f = open(driverMaster)
     # Opening the new file and will overwrite a preexisting version
     f1 = open(driverSub,'w')
