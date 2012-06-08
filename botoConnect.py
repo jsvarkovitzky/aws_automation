@@ -58,8 +58,8 @@ def start_instance():
         #Beginin uploading all relavant files to instance
         print "Uploading files to instance..."
         
-        local_file_names = [key_file,script,driver_file,user_info_file,topo_list,georegion_list,tidegauge_list,fixedgrid_list]
-        ec2_file_names = [key_file,script,driver_file,user_info_file,topo_list,georegion_list,tidegauge_list,fixedgrid_list]
+        local_file_names = [key_file,script,driver_file,user_info_file,topo_list,georegion_list,tidegauge_list,fixedgrid_list,plot_list]
+        ec2_file_names = [key_file,script,driver_file,user_info_file,topo_list,georegion_list,tidegauge_list,fixedgrid_list,plot_list]
 
         for i in range(0,len(local_file_names)):
             file_uploader(local_file_names[i],ec2_file_names[i],dns)
@@ -101,6 +101,7 @@ try:
         script = 'automateSetup.sh'
         key_file = 'keys.py'
         user_info_file = 'user_info_file.py'
+        plot_list = 'plot_list.csv'
         topo_list = row[8]
         georegion_list = row[9]
         tidegauge_list = row[10]
@@ -109,9 +110,10 @@ try:
 #Second case is if driver_block has a single row
 except:
     row = driver_block[()]
-    script = 'automateTestCase.sh'
+    script = 'automateSetup.sh'
     key_file = 'keys.py'
     user_info_file = 'user_info_file.py'
+    plot_list = 'plot_list.csv'
     topo_list = row[8]
     georegion_list = row[9]
     tidegauge_list = row[10]
