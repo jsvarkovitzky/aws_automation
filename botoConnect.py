@@ -14,6 +14,7 @@ import keys
 import sys
 import user_info_file
 import csv
+import driver_creator
 
 #Makes user specific data callable in this script
 user = user_info_file.user_info()
@@ -58,7 +59,7 @@ def start_instance():
         #Beginin uploading all relavant files to instance
         print "Uploading files to instance..."
         
-        local_file_names = [key_file,script,driver_file,user_info_file,topo_list,georegion_list,tidegauge_list,fixedgrid_list,plot_list]
+        local_file_names = [key_file,script,new_driver_file,user_info_file,topo_list,georegion_list,tidegauge_list,fixedgrid_list,plot_list]
         ec2_file_names = [key_file,script,driver_file,user_info_file,topo_list,georegion_list,tidegauge_list,fixedgrid_list,plot_list]
 
         for i in range(0,len(local_file_names)):
@@ -106,6 +107,8 @@ try:
         georegion_list = row[9]
         tidegauge_list = row[10]
         fixedgrid_list = row[11]
+        new_driver_file = 'driver_%s.csv'%row[0]
+        driver_creator.make_driver(driver_file,new_driver_file,row[0])
         start_instance()
 #Second case is if driver_block has a single row
 except:
@@ -118,5 +121,7 @@ except:
     georegion_list = row[9]
     tidegauge_list = row[10]
     fixedgrid_list = row[11]
+    new_driver_file = 'driver_%s.csv'%row[0]
+    driver_creator.make_driver(driver_file,new_driver_file,row[0])
     start_instance()
     
